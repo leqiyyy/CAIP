@@ -67,7 +67,7 @@ export default {
         // 加载系统配置
         await store.dispatch('app/loadConfig')
         
-        console.log('✅ EtherSentinel应用初始化完成')
+        console.log('✅ 鉴诈链图应用初始化完成')
       } catch (error) {
         console.error('❌ 应用初始化失败:', error)
       } finally {

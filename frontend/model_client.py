@@ -29,7 +29,7 @@ class ModelClient:
         # 设置请求头
         self.session.headers.update({
             'Content-Type': 'application/json',
-            'User-Agent': 'EtherSentinel-Frontend/1.0'
+            'User-Agent': '鉴诈链图-Frontend/1.0'
         })
         
         logger.info(f"初始化模型客户端，服务地址: {self.model_server_url}")

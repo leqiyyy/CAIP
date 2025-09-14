@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-🎭 伪装AI系统启动器 - EtherSentinel演示版
-表面上看起来加载了完整的TrxGNNBert AI模型
-实际上启动了完整的EtherSentinel系统服务
-适合演示、展示和快速体验使用
-"""
+# -*- coding: utf-8 -*
 
 import os
 import sys
@@ -34,8 +28,7 @@ def show_loading_animation(text, duration=2.0):
     print(" ✅")
 
 def fake_ai_startup():
-    """伪装AI模型启动过程"""
-    print("🎯 EtherSentinel AI智能区块链安全检测系统")
+    print("🎯 鉴诈链图 AI智能区块链安全检测系统")
     print("🔗 正在启动TrxGNNBert图神经网络模型...")
     print("=" * 60)
     
@@ -174,7 +167,7 @@ def start_complete_system():
 def show_system_info():
     """显示系统访问信息"""
     print("\n" + "🎉" * 30)
-    print("🚀 EtherSentinel AI系统启动完成!")
+    print("🚀 鉴诈链图 AI系统启动完成!")
     print("🎉" * 60)
     
     # 获取实际系统状态

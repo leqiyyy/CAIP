@@ -1,7 +1,7 @@
 {
-  "name": "ethersentinel-frontend",
+  "name": "鉴诈链图-frontend",
   "version": "1.0.0",
-  "description": "EtherSentinel 区块链安全检测平台前端 - 基于Vue.js",
+  "description": "鉴诈链图 区块链安全检测平台前端 - 基于Vue.js",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -63,10 +63,10 @@
     "ai",
     "machine-learning"
   ],
-  "author": "EtherSentinel Team",
+  "author": "鉴诈链图 Team",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ethersentinel/frontend.git"
+    "url": "https://github.com/鉴诈链图/frontend.git"
   }
 } 

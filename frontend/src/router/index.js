@@ -20,7 +20,7 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      title: 'EtherSentinel - 主页',
+      title: '鉴诈链图 - 主页',
       requiresAuth: false,
       keepAlive: true
     }
@@ -30,7 +30,7 @@ const routes = [
     name: 'Auth',
     component: Auth,
     meta: {
-      title: 'EtherSentinel - 登录',
+      title: '鉴诈链图 - 登录',
       requiresAuth: false,
       hideNavbar: true
     }
@@ -44,7 +44,7 @@ const routes = [
     name: 'Dashboard',
     component: Dashboard,
     meta: {
-      title: 'EtherSentinel - 控制台',
+      title: '鉴诈链图 - 控制台',
       requiresAuth: true,
       keepAlive: true,
       roles: ['admin', 'user']
@@ -55,7 +55,7 @@ const routes = [
     name: 'AdvancedTools',
     component: AdvancedTools,
     meta: {
-      title: 'EtherSentinel - 高级工具',
+      title: '鉴诈链图 - 高级工具',
       requiresAuth: true,
       keepAlive: false,
       roles: ['admin', 'user']
@@ -66,7 +66,7 @@ const routes = [
     name: 'RiskReport',
     component: RiskReport,
     meta: {
-      title: 'EtherSentinel - 风险报告',
+      title: '鉴诈链图 - 风险报告',
       requiresAuth: true,
       keepAlive: true,
       roles: ['admin', 'user']
@@ -77,7 +77,7 @@ const routes = [
     name: 'Settings',
     component: Settings,
     meta: {
-      title: 'EtherSentinel - 设置',
+      title: '鉴诈链图 - 设置',
       requiresAuth: true,
       keepAlive: false,
       roles: ['admin']

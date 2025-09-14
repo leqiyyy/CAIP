@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-EtherSentinel - 基于AI大模型的区块链安全检测平台
+鉴诈链图 - 基于AI大模型的区块链安全检测平台
 搭载自研TRXGNNBERT模型，融合图神经网络(GNN)与Transformer技术
 实现智能化的以太坊安全威胁检测与预警
 """
@@ -73,7 +73,7 @@ def generate_random_timestamp():
     random_time = current_time - random.randint(0, 31536000)  # 在过去一年内随机
     return datetime.fromtimestamp(random_time).strftime('%Y-%m-%d %H:%M:%S')
 
-class UnifiedEtherSentinelAnalyzer:
+class Unified鉴诈链图Analyzer:
     """基于TRXGNNBERT模型的智能以太坊安全分析器
     
     融合图神经网络(GNN)与Transformer技术，实现：
@@ -435,7 +435,7 @@ class UnifiedEtherSentinelAnalyzer:
         return transactions
 
 # 创建分析器实例
-analyzer = UnifiedEtherSentinelAnalyzer()
+analyzer = Unified鉴诈链图Analyzer()
 
 # 用户认证
 VALID_CREDENTIALS = {'admin': 'admin123'}
@@ -537,7 +537,7 @@ def check_transaction_risk():
             }), 400
             
         # 分析交易风险
-        analyzer = UnifiedEtherSentinelAnalyzer()
+        analyzer = Unified鉴诈链图Analyzer()
         result = analyzer.analyze_transaction_risk(tx_hash)
         
         # 转换为可读的风险类型
@@ -708,7 +708,7 @@ def authenticate():
 def health_check():
     return jsonify({
         'status': 'healthy',
-        'service': 'EtherSentinel Unified API',
+        'service': '鉴诈链图 Unified API',
         'version': '3.0.0',
         'enhanced_mode': ENHANCED_MODE,
         'phishing_db_loaded': len(analyzer.phishing_addresses) > 0,
@@ -752,7 +752,7 @@ def open_browser():
 def main():
     """主函数"""
     print("=" * 60)
-    print("🛡️  EtherSentinel 统一区块链安全检测平台")
+    print("🛡️  鉴诈链图 统一区块链安全检测平台")
     print("=" * 60)
     
     # 检查依赖

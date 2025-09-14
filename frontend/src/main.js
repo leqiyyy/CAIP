@@ -65,7 +65,7 @@ window.router = router
 window.ethers = ethers
 window.Web3 = Web3
 
-console.log('🚀 EtherSentinel Vue应用已启动')
+console.log('🚀 鉴诈链图 Vue应用已启动')
 console.log('📊 Element Plus UI已加载')
 console.log('🔗 Web3环境已准备就绪')
 console.log('📈 图表组件已注册') 

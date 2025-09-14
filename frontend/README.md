@@ -1,8 +1,8 @@
-# EtherSentinel Frontend - Vue.js 架构
+# 鉴诈链图 Frontend - Vue.js 架构
 
 ## 项目概述
 
-EtherSentinel 前端采用现代化的Vue.js 3架构，集成了完整的生态系统组件，实现了专业的区块链安全检测平台界面。
+鉴诈链图 前端采用现代化的Vue.js 3架构，集成了完整的生态系统组件，实现了专业的区块链安全检测平台界面。
 
 ## 🏗️ 技术架构
 
@@ -193,7 +193,7 @@ VUE_APP_API_BASE_URL=http://localhost:5000
 VUE_APP_ENVIRONMENT=development
 
 # .env.production  
-VUE_APP_API_BASE_URL=https://api.ethersentinel.com
+VUE_APP_API_BASE_URL=https://api.鉴诈链图.com
 VUE_APP_ENVIRONMENT=production
 ```
 

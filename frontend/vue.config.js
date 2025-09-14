@@ -31,7 +31,7 @@ module.exports = defineConfig({
   
   // PWA配置
   pwa: {
-    name: 'EtherSentinel',
+    name: '鉴诈链图',
     themeColor: '#1e40af',
     msTileColor: '#1e40af',
     appleMobileWebAppCapable: 'yes',
