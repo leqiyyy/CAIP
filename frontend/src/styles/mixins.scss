@@ -1,0 +1,231 @@
+// SCSS Mixins 文件
+
+// 响应式断点混合
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == xs {
+    @media (max-width: #{$breakpoint-xs - 1px}) {
+      @content;
+    }
+  }
+  @else if $breakpoint == sm {
+    @media (min-width: #{$breakpoint-sm}) {
+      @content;
+    }
+  }
+  @else if $breakpoint == md {
+    @media (min-width: #{$breakpoint-md}) {
+      @content;
+    }
+  }
+  @else if $breakpoint == lg {
+    @media (min-width: #{$breakpoint-lg}) {
+      @content;
+    }
+  }
+  @else if $breakpoint == xl {
+    @media (min-width: #{$breakpoint-xl}) {
+      @content;
+    }
+  }
+}
+
+// 文字截断
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 多行文字截断
+@mixin text-truncate-lines($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// 绝对居中
+@mixin center-absolute {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// Flex居中
+@mixin center-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 卡片样式
+@mixin card-style($padding: $spacing-base) {
+  background: white;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-base;
+  padding: $padding;
+  transition: box-shadow $transition-base;
+  
+  &:hover {
+    box-shadow: $box-shadow-hover;
+  }
+}
+
+// 按钮样式
+@mixin button-style($bg-color, $text-color: white, $hover-bg: darken($bg-color, 10%)) {
+  background-color: $bg-color;
+  color: $text-color;
+  border: 1px solid $bg-color;
+  padding: 8px 16px;
+  border-radius: $border-radius-base;
+  cursor: pointer;
+  transition: all $transition-base;
+  
+  &:hover:not(:disabled) {
+    background-color: $hover-bg;
+    border-color: $hover-bg;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// 输入框样式
+@mixin input-style {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid $border-color-base;
+  border-radius: $border-radius-base;
+  font-size: $font-size-base;
+  transition: border-color $transition-base, box-shadow $transition-base;
+  
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+  }
+  
+  &::placeholder {
+    color: $text-color-muted;
+  }
+}
+
+// 风险状态徽章
+@mixin risk-badge($level) {
+  @if $level == high {
+    background-color: $color-risk-high;
+    color: white;
+  }
+  @else if $level == medium {
+    background-color: $color-risk-medium;
+    color: white;
+  }
+  @else if $level == low {
+    background-color: $color-risk-low;
+    color: white;
+  }
+  
+  padding: 4px 8px;
+  border-radius: $border-radius-base;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  display: inline-block;
+}
+
+// 加载动画
+@mixin loading-spinner($size: 20px, $color: $color-primary) {
+  width: $size;
+  height: $size;
+  border: 2px solid rgba($color, 0.3);
+  border-radius: 50%;
+  border-top-color: $color;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// 脉冲动画
+@mixin pulse-animation($color: $color-primary) {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+}
+
+// 淡入动画
+@mixin fade-in($duration: 0.3s) {
+  animation: fadeIn $duration ease-in-out;
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+// 渐变背景
+@mixin gradient-background($start-color, $end-color, $direction: to right) {
+  background: linear-gradient($direction, $start-color, $end-color);
+}
+
+// 玻璃效果
+@mixin glass-effect($opacity: 0.1) {
+  background: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// 阴影效果
+@mixin elevated-shadow($level: 1) {
+  @if $level == 1 {
+    box-shadow: $box-shadow-sm;
+  }
+  @else if $level == 2 {
+    box-shadow: $box-shadow-base;
+  }
+  @else if $level == 3 {
+    box-shadow: $box-shadow-md;
+  }
+  @else if $level == 4 {
+    box-shadow: $box-shadow-lg;
+  }
+  @else if $level == 5 {
+    box-shadow: $box-shadow-xl;
+  }
+}
+
+// 区块链地址样式
+@mixin address-style {
+  font-family: $font-family-mono;
+  font-size: $font-size-sm;
+  background-color: $background-color-light;
+  padding: 4px 8px;
+  border-radius: $border-radius-base;
+  border: 1px solid $border-color-light;
+  color: $color-address;
+  
+  &.clickable {
+    cursor: pointer;
+    transition: background-color $transition-base;
+    
+    &:hover {
+      background-color: rgba($color-address, 0.1);
+    }
+  }
+} 

@@ -1,0 +1,72 @@
+{
+  "name": "ethersentinel-frontend",
+  "version": "1.0.0",
+  "description": "EtherSentinel 区块链安全检测平台前端 - 基于Vue.js",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "start": "python app.py",
+    "dev": "npm run serve"
+  },
+  "dependencies": {
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4",
+    "vuex": "^4.1.0",
+    "axios": "^1.4.0",
+    "element-plus": "^2.3.8",
+    "echarts": "^5.4.2",
+    "vue-echarts": "^6.6.0",
+    "d3": "^7.8.5",
+    "web3": "^4.0.3",
+    "ethers": "^6.6.4",
+    "@vue/composition-api": "^1.7.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-plugin-router": "^5.0.8",
+    "@vue/cli-plugin-vuex": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "@vue/eslint-config-standard": "^8.0.1",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^9.1.2",
+    "css-loader": "^6.8.1",
+    "eslint": "^8.45.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-standard": "^5.0.0",
+    "eslint-plugin-vue": "^9.15.1",
+    "vue-loader": "^17.2.2",
+    "vue-template-compiler": "^2.7.14",
+    "webpack": "^5.88.1"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "keywords": [
+    "vue",
+    "blockchain",
+    "ethereum", 
+    "security",
+    "defi",
+    "web3",
+    "ai",
+    "machine-learning"
+  ],
+  "author": "EtherSentinel Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ethersentinel/frontend.git"
+  }
+} 

@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风险分析 - EtherSentinel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg: #0a0e1a;
+            --card-bg: rgba(16, 20, 31, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-cyan: #00ffcc;
+            --neon-blue: #00d4ff;
+            --neon-orange: #ff6b35;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --danger-red: #ff004d;
+            --shadow-glow: 0 8px 32px rgba(0, 255, 204, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            font-weight: 400;
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+
+        /* 优化字体排版 */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        p, span, div {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 400;
+            line-height: 1.7;
+            letter-spacing: 0.3px;
+        }
+
+        .text-enhanced {
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle-enhanced {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
+        }
+
+        .content-text {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            letter-spacing: 0.4px;
+            font-weight: 400;
+        }
+
+        /* 增强的区块链科技背景 */
+        .cyber-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -5;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 204, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(138, 43, 226, 0.08) 0%, transparent 50%),
+                linear-gradient(125deg, #0a0e1a 0%, #1a1f35 50%, #0a0e1a 100%);
+        }
+
+        /* 动态网格背景 */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 204, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 204, 0.1) 1px, transparent 1px),
+                linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+            background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+            z-index: -4;
+            opacity: 0.4;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+        }
+
+        /* 粒子效果背景 */
+        .particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--neon-cyan);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: float 15s linear infinite;
+        }
+
+        .particle:nth-child(odd) {
+            background: var(--neon-blue);
+            animation-duration: 20s;
+        }
+
+        .particle:nth-child(3n) {
+            background: #39ff14;
+            animation-duration: 25s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* 区块链数据流 */
+        .blockchain-streams {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.1;
+        }
+
+        .data-stream {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(to bottom, 
+                transparent, 
+                #00ff41, 
+                transparent);
+            animation: dataFlow 8s linear infinite;
+        }
+
+        @keyframes dataFlow {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* 主要内容区域 */
+        .main-container {
+            margin-top: 80px;
+            padding: 1.5rem;
+            min-height: calc(100vh - 80px);
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            color: var(--neon-cyan);
+            margin-bottom: 0.8rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            line-height: 1.6;
+            letter-spacing: 0.8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 204, 0.2);
+            border-color: var(--neon-cyan);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .stat-danger {
+            color: var(--danger-red);
+        }
+
+        .stat-warning {
+            color: var(--neon-orange);
+        }
+
+        .stat-success {
+            color: var(--neon-cyan);
+        }
+
+        /* 内容卡片 */
+        .content-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .card-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            color: var(--neon-cyan);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 威胁分析表格 */
+        .threat-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .threat-table th,
+        .threat-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .threat-table th {
+            background: rgba(0, 255, 204, 0.1);
+            color: var(--neon-cyan);
+            font-weight: 600;
+        }
+
+        .threat-table td {
+            color: var(--text-secondary);
+        }
+
+        .threat-table tr:hover {
+            background: rgba(0, 255, 204, 0.05);
+        }
+
+        .threat-level {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .threat-high {
+            background: rgba(255, 0, 77, 0.2);
+            color: var(--danger-red);
+            border: 1px solid var(--danger-red);
+        }
+
+        .threat-medium {
+            background: rgba(255, 107, 53, 0.2);
+            color: var(--neon-orange);
+            border: 1px solid var(--neon-orange);
+        }
+
+        .threat-low {
+            background: rgba(0, 255, 204, 0.2);
+            color: var(--neon-cyan);
+            border: 1px solid var(--neon-cyan);
+        }
+
+        /* 时间线样式 */
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--neon-cyan);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 3rem;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 12px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background: var(--neon-cyan);
+            border-radius: 50%;
+            border: 3px solid var(--dark-bg);
+        }
+
+        .timeline-content {
+            background: rgba(0, 255, 204, 0.05);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .timeline-title {
+            color: var(--neon-cyan);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-time {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* 图表容器 */
+        .chart-container {
+            height: 300px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* 威胁统计板块样式 */
+        .threat-stat-box {
+            padding: 1rem;
+            background: rgba(0, 255, 204, 0.05);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .threat-stat-box:hover {
+            background: rgba(0, 255, 204, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .analysis-section {
+            background: rgba(0, 20, 40, 0.4);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 10px;
+            padding: 1.2rem;
+            height: 100%;
+        }
+
+        .section-title {
+            color: var(--neon-cyan);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 255, 204, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .analysis-item {
+            margin-bottom: 0.8rem;
+            padding: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .location-label, .method-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- 增强的背景系统 -->
+    <div class="cyber-background"></div>
+    <div class="grid-overlay"></div>
+    <div class="particles-bg" id="particlesBg"></div>
+    <div class="blockchain-streams" id="blockchainStreams"></div>
+
+    <!-- 导航栏 -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- 主要内容 -->
+    <div class="main-container">
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1 class="page-title">风险分析报告</h1>
+            <p class="page-subtitle subtitle-enhanced">区块链安全威胁监控和分析</p>
+            </div>
+            
+        <!-- 统计概览 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon stat-danger">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+                <div class="stat-number stat-danger">127</div>
+                <div class="stat-label">高风险威胁</div>
+                    </div>
+            <div class="stat-card">
+                <div class="stat-icon stat-warning">
+                    <i class="bi bi-shield-exclamation"></i>
+                </div>
+                <div class="stat-number stat-warning">348</div>
+                <div class="stat-label">中等风险</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon stat-success">
+                    <i class="bi bi-shield-check"></i>
+        </div>
+                <div class="stat-number stat-success">2,854</div>
+                <div class="stat-label">安全交易</div>
+                    </div>
+            <div class="stat-card">
+                <div class="stat-icon stat-success">
+                    <i class="bi bi-graph-up"></i>
+                    </div>
+                <div class="stat-number stat-success">99.2%</div>
+                <div class="stat-label">检测准确率</div>
+                </div>
+                        </div>
+
+        <!-- 最新威胁情报 -->
+        <div class="content-card">
+            <h3 class="card-title">
+                <i class="bi bi-exclamation-diamond"></i>
+                最新威胁情报
+            </h3>
+            <table class="threat-table">
+                <thead>
+                    <tr>
+                        <th>威胁类型</th>
+                        <th>影响地址</th>
+                        <th>风险等级</th>
+                        <th>发现时间</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>钓鱼网站</td>
+                        <td>0x742d...a8c2</td>
+                        <td><span class="threat-level threat-high">高危</span></td>
+                        <td id="threat-time-1">加载中...</td>
+                        <td>已处理</td>
+                    </tr>
+                    <tr>
+                        <td>洗钱活动</td>
+                        <td>0x1a2b...f3e4</td>
+                        <td><span class="threat-level threat-high">高危</span></td>
+                        <td id="threat-time-2">加载中...</td>
+                        <td>监控中</td>
+                    </tr>
+                    <tr>
+                        <td>可疑转账</td>
+                        <td>0x9c8d...b7a6</td>
+                        <td><span class="threat-level threat-medium">中危</span></td>
+                        <td id="threat-time-3">加载中...</td>
+                        <td>待分析</td>
+                    </tr>
+                    <tr>
+                        <td>恶意合约</td>
+                        <td>0x5e4f...d9c1</td>
+                        <td><span class="threat-level threat-high">高危</span></td>
+                        <td id="threat-time-4">加载中...</td>
+                        <td>已阻止</td>
+                    </tr>
+                    <tr>
+                        <td>蜜罐地址</td>
+                        <td>0x3b2a...e5f8</td>
+                        <td><span class="threat-level threat-medium">中危</span></td>
+                        <td id="threat-time-5">加载中...</td>
+                        <td>已标记</td>
+                    </tr>
+                </tbody>
+            </table>
+                    </div>
+
+        <!-- 威胁趋势分析和风险分布 -->
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="bi bi-graph-up-arrow"></i>
+                        威胁趋势分析
+                    </h3>
+                    <div class="chart-container" style="height: 240px;">
+                        <canvas id="threatTrendChart" width="400" height="240"></canvas>
+                    </div>
+                </div>
+                
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="bi bi-pie-chart"></i>
+                        风险等级分布
+                    </h3>
+                    <div class="chart-container" style="height: 240px;">
+                        <canvas id="riskDistributionChart" width="400" height="240"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-8">
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="bi bi-clock-history"></i>
+                        最近活动
+                    </h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">检测到新的钓鱼地址</div>
+                                <div class="timeline-time" id="activity-time-1">5分钟前</div>
+                                <p class="mb-0">发现高风险钓鱼地址 0x742d...a8c2，已自动加入黑名单</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">批量交易分析完成</div>
+                                <div class="timeline-time" id="activity-time-2">1小时前</div>
+                                <p class="mb-0">完成对1,500笔交易的安全分析，发现3个可疑交易</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">威胁数据库更新</div>
+                                <div class="timeline-time" id="activity-time-3">3小时前</div>
+                                <p class="mb-0">更新了最新的威胁特征库，新增258个恶意地址</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">系统安全扫描</div>
+                                <div class="timeline-time" id="activity-time-4">6小时前</div>
+                                <p class="mb-0">完成系统安全扫描，所有模块运行正常</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">用户行为分析</div>
+                                <div class="timeline-time" id="activity-time-5">12小时前</div>
+                                <p class="mb-0">分析用户交易模式，识别出2个异常行为模式</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 威胁类型统计 -->
+        <div class="content-card">
+            <h3 class="card-title">
+                <i class="bi bi-shield-x"></i>
+                威胁类型统计（最近30天）
+            </h3>
+            
+            <!-- 统计数字展示 -->
+            <div class="row mb-4">
+                <div class="col-md-3 text-center mb-3">
+                    <div class="threat-stat-box">
+                        <div class="stat-danger" style="font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem;" id="phishing-count">45</div>
+                        <div class="text-secondary mb-2" style="font-weight: 500;">钓鱼活动</div>
+                        <small class="text-info"><i class="bi bi-arrow-up"></i> 15% 较上月</small>
+                    </div>
+                </div>
+                <div class="col-md-3 text-center mb-3">
+                    <div class="threat-stat-box">
+                        <div class="stat-danger" style="font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem;" id="laundering-count">32</div>
+                        <div class="text-secondary mb-2" style="font-weight: 500;">洗钱活动</div>
+                        <small class="text-warning"><i class="bi bi-arrow-down"></i> 8% 较上月</small>
+                    </div>
+                </div>
+                <div class="col-md-3 text-center mb-3">
+                    <div class="threat-stat-box">
+                        <div class="stat-warning" style="font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem;" id="malicious-count">28</div>
+                        <div class="text-secondary mb-2" style="font-weight: 500;">恶意合约</div>
+                        <small class="text-danger"><i class="bi bi-arrow-up"></i> 23% 较上月</small>
+                    </div>
+                </div>
+                <div class="col-md-3 text-center mb-3">
+                    <div class="threat-stat-box">
+                        <div class="stat-warning" style="font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem;" id="honeypot-count">22</div>
+                        <div class="text-secondary mb-2" style="font-weight: 500;">蜜罐地址</div>
+                        <small class="text-success"><i class="bi bi-arrow-down"></i> 12% 较上月</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 详细威胁分析 -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="analysis-section">
+                        <h5 class="section-title">威胁热点地区</h5>
+                        <div class="analysis-item">
+                            <span class="location-label">北美地区:</span> 
+                            <span class="text-danger">高风险</span> - 检测到52起攻击
+                        </div>
+                        <div class="analysis-item">
+                            <span class="location-label">欧洲地区:</span> 
+                            <span class="text-warning">中风险</span> - 检测到31起攻击
+                        </div>
+                        <div class="analysis-item">
+                            <span class="location-label">亚太地区:</span> 
+                            <span class="text-success">低风险</span> - 检测到18起攻击
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="analysis-section">
+                        <h5 class="section-title">攻击手法分析</h5>
+                        <div class="analysis-item">
+                            <span class="method-label">社工钓鱼:</span> 
+                            占比 42% - 主要通过虚假网站
+                        </div>
+                        <div class="analysis-item">
+                            <span class="method-label">技术攻击:</span> 
+                            占比 31% - 智能合约漏洞利用
+                        </div>
+                        <div class="analysis-item">
+                            <span class="method-label">资金盗取:</span> 
+                            占比 27% - 私钥泄露导致
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- 加载导航栏组件 -->
+    <script>
+        fetch('navbar-component.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('navbar-placeholder').innerHTML = html;
+                // 设置当前页面导航栏高亮
+                setTimeout(() => {
+                    const currentNavLink = document.querySelector('a[href="risk-report.html"]');
+                    if (currentNavLink) {
+                        // 移除所有其他页面的激活状态
+                        document.querySelectorAll('.unified-nav-link').forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        // 设置当前页面为激活状态
+                        currentNavLink.classList.add('active');
+                    }
+                }, 100);
+            })
+            .catch(error => console.error('导航栏加载失败:', error));
+    </script>
+    
+    <script>
+        // 页面加载时检查登录状态
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            animateStats();
+            initRealTimestamps();
+            initCharts();
+            addExportButtons();
+            
+            // 初始化粒子背景系统
+            initParticleBackground();
+            initDataStreams();
+            
+            // 每分钟更新一次相对时间
+            setInterval(updateTimelineTimestamps, 60000);
+        });
+
+        // 粒子背景系统
+        function initParticleBackground() {
+            const particlesContainer = document.getElementById('particlesBg');
+            const particleCount = 60;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 区块链数据流
+        function initDataStreams() {
+            const streamsContainer = document.getElementById('blockchainStreams');
+            const streamCount = 25;
+
+            for (let i = 0; i < streamCount; i++) {
+                const stream = document.createElement('div');
+                stream.className = 'data-stream';
+                stream.style.left = Math.random() * 100 + '%';
+                stream.style.animationDelay = Math.random() * 8 + 's';
+                stream.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                streamsContainer.appendChild(stream);
+            }
+        }
+
+        // 检查登录状态
+        function checkAuthStatus() {
+            const isLoggedIn = localStorage.getItem('ethersent_logged_in') || 
+                              sessionStorage.getItem('ethersent_logged_in');
+            
+            if (isLoggedIn !== 'true') {
+                window.location.href = 'auth.html';
+                return;
+            }
+        }
+
+        // 初始化实时时间戳
+        function initRealTimestamps() {
+            const now = new Date();
+            
+            // 威胁情报表格的时间戳
+            const threatTimes = [
+                new Date(now.getTime() - 1 * 60 * 60 * 1000), // 1小时前
+                new Date(now.getTime() - 2 * 60 * 60 * 1000), // 2小时前  
+                new Date(now.getTime() - 3 * 60 * 60 * 1000), // 3小时前
+                new Date(now.getTime() - 4 * 60 * 60 * 1000), // 4小时前
+                new Date(now.getTime() - 5 * 60 * 60 * 1000)  // 5小时前
+            ];
+            
+            threatTimes.forEach((time, index) => {
+                const element = document.getElementById(`threat-time-${index + 1}`);
+                if (element) {
+                    element.textContent = formatTimestamp(time);
+                }
+            });
+            
+            // 更新最近活动时间线
+            updateTimelineTimestamps();
+        }
+
+        // 格式化时间戳
+        function formatTimestamp(date) {
+            return date.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+        }
+
+        // 更新时间线的相对时间
+        function updateTimelineTimestamps() {
+            const now = new Date();
+            const timelineItems = [
+                { element: document.querySelector('.timeline-item:nth-child(1) .timeline-time'), 
+                  offset: 5 * 60 * 1000 }, // 5分钟前
+                { element: document.querySelector('.timeline-item:nth-child(2) .timeline-time'), 
+                  offset: 60 * 60 * 1000 }, // 1小时前
+                { element: document.querySelector('.timeline-item:nth-child(3) .timeline-time'), 
+                  offset: 3 * 60 * 60 * 1000 } // 3小时前
+            ];
+            
+            timelineItems.forEach(item => {
+                if (item.element) {
+                    const targetTime = new Date(now.getTime() - item.offset);
+                    item.element.textContent = getRelativeTime(targetTime);
+                }
+            });
+        }
+
+        // 获取相对时间描述
+        function getRelativeTime(date) {
+            const now = new Date();
+            const diffMs = now.getTime() - date.getTime();
+            const diffMins = Math.floor(diffMs / (1000 * 60));
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            
+            if (diffMins < 60) {
+                return `${diffMins}分钟前`;
+            } else if (diffHours < 24) {
+                return `${diffHours}小时前`;
+                    } else {
+                return `${diffDays}天前`;
+            }
+        }
+
+        // 用户菜单切换
+        function toggleUserMenu() {
+            if (confirm('确定要退出登录吗？')) {
+                localStorage.removeItem('ethersent_logged_in');
+                localStorage.removeItem('ethersent_username');
+                sessionStorage.removeItem('ethersent_logged_in');
+                sessionStorage.removeItem('ethersent_username');
+                window.location.href = 'auth.html';
+            }
+        }
+
+        // 数字动画
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            statNumbers.forEach(stat => {
+                const target = stat.textContent.replace(/[^\d.]/g, '');
+                const isPercentage = stat.textContent.includes('%');
+                const suffix = stat.textContent.match(/[^\d.]+$/)?.[0] || '';
+                
+                let current = 0;
+                const increment = parseFloat(target) / 100;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= parseFloat(target)) {
+                        current = parseFloat(target);
+                        clearInterval(timer);
+                    }
+                    
+                    if (isPercentage) {
+                        stat.textContent = current.toFixed(1) + '%';
+                    } else if (target.includes(',')) {
+                        stat.textContent = Math.floor(current).toLocaleString() + suffix;
+                } else {
+                        stat.textContent = Math.floor(current) + suffix;
+                    }
+                }, 30);
+            });
+        }
+
+        // 初始化图表
+        function initCharts() {
+            // 威胁趋势图表
+            const trendCtx = document.getElementById('threatTrendChart').getContext('2d');
+            const trendChart = new Chart(trendCtx, {
+                    type: 'line',
+                data: {
+                    labels: ['1天前', '2天前', '3天前', '4天前', '5天前', '6天前', '7天前'],
+                    datasets: [{
+                        label: '威胁检测数量',
+                        data: [23, 19, 31, 25, 22, 18, 27],
+                        borderColor: '#00ffcc',
+                        backgroundColor: 'rgba(0, 255, 204, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: '处理完成数量',
+                        data: [21, 17, 29, 23, 20, 16, 25],
+                        borderColor: '#00d4ff',
+                        backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 风险分布饼图
+            const distributionCtx = document.getElementById('riskDistributionChart').getContext('2d');
+            const distributionChart = new Chart(distributionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['高风险', '中风险', '低风险', '安全'],
+                    datasets: [{
+                        data: [127, 348, 892, 2854],
+                        backgroundColor: [
+                            '#ff004d',
+                            '#ff6b35',
+                            '#ffaa00',
+                            '#00ffcc'
+                        ],
+                        borderColor: [
+                            '#ff004d',
+                            '#ff6b35',
+                            '#ffaa00',
+                            '#00ffcc'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#ffffff',
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 数据更新功能
+        function updateRealTimeData() {
+            // 更新威胁统计数字（模拟实时变化）
+            const elements = ['phishing-count', 'laundering-count', 'malicious-count', 'honeypot-count'];
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element && Math.random() < 0.1) { // 10%概率更新
+                    const currentValue = parseInt(element.textContent);
+                    const change = Math.random() > 0.5 ? 1 : -1;
+                    element.textContent = Math.max(0, currentValue + change);
+                }
+            });
+
+            // 更新活动时间线
+            const activityTimes = ['activity-time-1', 'activity-time-2', 'activity-time-3', 'activity-time-4', 'activity-time-5'];
+            activityTimes.forEach((id, index) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    const minutes = [5, 60, 180, 360, 720][index] + Math.floor(Date.now() / 60000) % 60;
+                    if (minutes < 60) {
+                        element.textContent = `${minutes}分钟前`;
+                    } else if (minutes < 1440) {
+                        element.textContent = `${Math.floor(minutes / 60)}小时前`;
+                    } else {
+                        element.textContent = `${Math.floor(minutes / 1440)}天前`;
+                    }
+                }
+            });
+        }
+
+        // 导出报告功能
+        function exportReport(format = 'pdf') {
+            const now = new Date();
+            const timestamp = now.toISOString().slice(0, 10);
+            
+            const reportData = {
+                timestamp: now.toLocaleString('zh-CN'),
+                totalThreats: 127,
+                mediumRisks: 348,
+                safeTransactions: 2854,
+                accuracyRate: 99.2,
+                threats: [
+                    { type: '钓鱼网站', count: 45, trend: '↑ 15%' },
+                    { type: '洗钱活动', count: 32, trend: '↓ 8%' },
+                    { type: '恶意合约', count: 28, trend: '↑ 23%' },
+                    { type: '蜜罐地址', count: 22, trend: '↓ 12%' }
+                ]
+            };
+
+            if (format === 'json') {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(reportData, null, 2));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", `threat-report-${timestamp}.json`);
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+            } else {
+                alert(`正在生成${format.toUpperCase()}格式报告...\n\n报告包含:\n- 威胁统计概览\n- 趋势分析图表\n- 详细威胁列表\n- 安全建议`);
+            }
+        }
+
+        // 添加导出按钮到页面
+        function addExportButtons() {
+            const pageHeader = document.querySelector('.page-header');
+            if (pageHeader) {
+                const exportDiv = document.createElement('div');
+                exportDiv.className = 'mt-3';
+                exportDiv.innerHTML = `
+                    <button class="btn btn-outline-light me-2" onclick="exportReport('pdf')">
+                        <i class="bi bi-file-pdf"></i> 导出PDF
+                    </button>
+                    <button class="btn btn-outline-light me-2" onclick="exportReport('excel')">
+                        <i class="bi bi-file-excel"></i> 导出Excel
+                    </button>
+                    <button class="btn btn-outline-light" onclick="exportReport('json')">
+                        <i class="bi bi-file-code"></i> 导出JSON
+                    </button>
+                `;
+                pageHeader.appendChild(exportDiv);
+            }
+        }
+
+        // 实时更新威胁数据
+        setInterval(updateRealTimeData, 30000); // 每30秒更新一次
+
+        // 增强的区块链粒子背景效果 - 与控制台一致
+        function initEnhancedParticleSystem() {
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.zIndex = '-1';
+            canvas.style.pointerEvents = 'none';
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const particlesBg = document.getElementById('particlesBg');
+            particlesBg.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            const particles = [];
+            const particleCount = 80;
+
+            // 粒子类
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 1.5;
+                    this.vy = (Math.random() - 0.5) * 1.5;
+                    this.radius = Math.random() * 3 + 1;
+                    this.alpha = Math.random() * 0.6 + 0.3;
+                    this.type = Math.random() < 0.7 ? 'normal' : 'blockchain';
+                    this.pulse = Math.random() * Math.PI * 2;
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.pulse += 0.02;
+
+                    if (this.x < 0 || this.x > canvas.width) {
+                        this.vx *= -1;
+                        this.x = Math.max(0, Math.min(canvas.width, this.x));
+                    }
+                    if (this.y < 0 || this.y > canvas.height) {
+                        this.vy *= -1;
+                        this.y = Math.max(0, Math.min(canvas.height, this.y));
+                    }
+                }
+
+                draw() {
+                    ctx.save();
+                    
+                    if (this.type === 'blockchain') {
+                        const pulseSize = this.radius + Math.sin(this.pulse) * 1;
+                        
+                        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, pulseSize * 3);
+                        gradient.addColorStop(0, `rgba(0, 255, 204, ${this.alpha * 0.3})`);
+                        gradient.addColorStop(0.5, `rgba(0, 212, 255, ${this.alpha * 0.1})`);
+                        gradient.addColorStop(1, 'rgba(0, 255, 204, 0)');
+                        
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, pulseSize * 3, 0, Math.PI * 2);
+                        ctx.fillStyle = gradient;
+                        ctx.fill();
+                        
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, pulseSize, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(0, 255, 204, ${this.alpha})`;
+                        ctx.fill();
+                        
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, pulseSize * 0.3, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha * 0.8})`;
+                        ctx.fill();
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        const colors = [
+                            `rgba(0, 255, 204, ${this.alpha})`,
+                            `rgba(0, 212, 255, ${this.alpha})`,
+                            `rgba(57, 255, 20, ${this.alpha})`
+                        ];
+                        ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+                        ctx.fill();
+                    }
+                    
+                    ctx.restore();
+                }
+            }
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+
+            function drawConnections() {
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < 120) {
+                            const opacity = (120 - distance) / 120 * 0.3;
+                            
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(0, 255, 204, ${opacity})`;
+                            ctx.lineWidth = 1;
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function drawDataFlow() {
+                const time = Date.now() * 0.001;
+                
+                for (let i = 0; i < 5; i++) {
+                    const x = (time * 50 + i * 200) % (canvas.width + 100) - 50;
+                    const y = 50 + i * (canvas.height / 6);
+                    
+                    ctx.save();
+                    ctx.fillStyle = `rgba(255, 0, 77, 0.6)`; // 威胁分析用红色数据流
+                    ctx.fillRect(x, y, 30, 8);
+                    
+                    const gradient = ctx.createLinearGradient(x - 50, y, x, y);
+                    gradient.addColorStop(0, 'rgba(255, 0, 77, 0)');
+                    gradient.addColorStop(1, 'rgba(255, 0, 77, 0.3)');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(x - 50, y, 50, 8);
+                    ctx.restore();
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+                
+                drawConnections();
+                drawDataFlow();
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+
+        // 鼠标交互效果
+        function initMouseInteraction() {
+            document.addEventListener('mousemove', (e) => {
+                if (Math.random() < 0.1) {
+                    createTrailParticle(e.clientX, e.clientY);
+                }
+            });
+        }
+
+        function createTrailParticle(x, y) {
+            const trail = document.createElement('div');
+            trail.style.position = 'fixed';
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            trail.style.width = '4px';
+            trail.style.height = '4px';
+            trail.style.backgroundColor = 'rgba(255, 0, 77, 0.6)'; // 威胁分析用红色轨迹
+            trail.style.borderRadius = '50%';
+            trail.style.pointerEvents = 'none';
+            trail.style.zIndex = '1000';
+            trail.style.transition = 'all 0.5s ease-out';
+            document.body.appendChild(trail);
+            
+            setTimeout(() => {
+                trail.style.opacity = '0';
+                trail.style.transform = 'scale(0)';
+                setTimeout(() => {
+                    if (trail.parentNode) {
+                        trail.parentNode.removeChild(trail);
+                    }
+                }, 500);
+            }, 10);
+        }
+
+        // 初始化增强粒子系统
+        setTimeout(() => {
+            initEnhancedParticleSystem();
+            initMouseInteraction();
+        }, 100);
+    </script>
+</body>
+</html>

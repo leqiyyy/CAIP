@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EtherSentinel - 区块链安全监控系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg: #0a0e1a;
+            --card-bg: rgba(16, 20, 31, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-cyan: #00ffcc;
+            --neon-blue: #00d4ff;
+            --neon-orange: #ff6b35;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --danger-red: #ff004d;
+            --shadow-glow: 0 8px 32px rgba(0, 255, 204, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 粒子背景 */
+        #particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        /* 网格覆盖层 */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 204, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 204, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+
+
+        /* 英雄区域 */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .hero-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-glow);
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-hero {
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-blue));
+            border: none;
+            color: #000;
+            font-weight: 600;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+        }
+
+        .btn-hero:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 30px rgba(0, 255, 204, 0.5);
+            color: #000;
+        }
+
+        .btn-hero-outline {
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        .btn-hero-outline:hover {
+            background: rgba(0, 255, 204, 0.1);
+            color: var(--neon-cyan);
+        }
+
+        /* 功能特性 */
+        .features-section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            text-align: center;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 204, 0.2);
+            border-color: var(--neon-cyan);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--neon-cyan);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            color: var(--neon-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-link {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .feature-link:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        /* 统计数据 */
+        .stats-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .stat-item {
+            margin-bottom: 2rem;
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: rgba(10, 14, 26, 0.9);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .feature-card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <div id="particles-bg"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="logo.png" alt="EtherSentinel" style="width: 32px; height: 32px; margin-right: 8px; border-radius: 50%; filter: drop-shadow(0 0 8px rgba(0, 255, 204, 0.6));"> EtherSentinel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="auth.html">登录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">控制台</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="hero-section">
+        <div class="container">
+        <div class="hero-content">
+                <h1 class="hero-title">EtherSentinel</h1>
+                <h2 class="hero-subtitle">区块链安全监控系统</h2>
+                <p class="hero-description">
+                    基于自研TRXGNNBERT模型，融合图神经网络(GNN)与Transformer技术，
+                    通过多维度评估交易和账户风险，全面分析区块链交易图中的节点关系和代码语义。
+                    我们提供精准的威胁检测、详细的风险分析报告和专业的安全建议，守护您的数字资产安全。
+            </p>
+                <div class="mt-4">
+                    <a href="auth.html" class="btn-hero">开始使用</a>
+                    <a href="#features" class="btn-hero btn-hero-outline">了解更多</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 功能特性 -->
+    <section id="features" class="features-section">
+        <div class="container">
+        <h2 class="section-title">核心功能</h2>
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+            <div class="feature-card">
+                        <i class="bi bi-shield-check feature-icon"></i>
+                        <h3 class="feature-title">交易甄别</h3>
+                <p class="feature-description">
+                            实时检测识别异常交易、操作方式，利用多维特征分析保障交易安全，防范欺诈和恶意行为。
+                </p>
+                        <a href="dashboard.html#transaction" class="feature-link">开始使用</a>
+            </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <i class="bi bi-search-heart feature-icon"></i>
+                        <h3 class="feature-title">地址检测</h3>
+                <p class="feature-description">
+                            分析区块链地址的历史行为和交易模式，评估风险等级，识别潜在威胁并提供预警。
+                </p>
+                        <a href="dashboard.html#address" class="feature-link">开始使用</a>
+            </div>
+                </div>
+                                <div class="col-lg-3 col-md-6">
+            <div class="feature-card">
+                        <i class="bi bi-braces-asterisk feature-icon"></i>
+                        <h3 class="feature-title">合约分析</h3>
+                <p class="feature-description">
+                            通过智能合约代码解析和函数名恢复，助力代码审计与安全分析，确保确保合约的完整性和安全性。
+                </p>
+                        <a href="dashboard.html#code" class="feature-link">开始使用</a>
+            </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+            <div class="feature-card">
+                        <i class="bi bi-activity feature-icon"></i>
+                        <h3 class="feature-title">实时数据</h3>
+                <p class="feature-description">
+                            提供区块链交易的实时监控和数据分析，确保信息及时性和准确性，支持实时决策。
+                </p>
+                        <a href="dashboard.html#data" class="feature-link">开始使用</a>
+            </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 统计数据 -->
+    <section class="container">
+        <div class="stats-section">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat-addresses">50K+</div>
+                        <div class="stat-label">已检测地址</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat-transactions">1M+</div>
+                        <div class="stat-label">分析交易</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat-threats">2.5K</div>
+                        <div class="stat-label">发现威胁</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat-accuracy">99.8%</div>
+                        <div class="stat-label">检测准确率</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2025 EtherSentinel. 保留所有权利。</p>
+            </div>
+                <div class="col-md-6 text-end">
+                    <a href="#" class="text-decoration-none me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-decoration-none me-3"><i class="bi bi-github"></i></a>
+                    <a href="#" class="text-decoration-none"><i class="bi bi-envelope"></i></a>
+            </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 粒子动画 -->
+    <script>
+        // 粒子背景动画
+        function initParticleBackground() {
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'absolute';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            document.getElementById('particles-bg').appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const particles = [];
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: (Math.random() - 0.5) * 2,
+                    radius: Math.random() * 2 + 1,
+                    alpha: Math.random() * 0.5 + 0.2
+                });
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(particle => {
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+                    
+                    if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
+                    if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
+                    
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0, 255, 204, ${particle.alpha})`;
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+
+        // 数字动画
+        function animateNumbers() {
+            const counters = document.querySelectorAll('[id^="stat-"]');
+            
+            counters.forEach(counter => {
+                const target = counter.textContent.replace(/[^\d.]/g, '');
+                const isPercentage = counter.textContent.includes('%');
+                const suffix = counter.textContent.match(/[^\d.]+$/)?.[0] || '';
+                
+                let current = 0;
+                const increment = parseFloat(target) / 100;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= parseFloat(target)) {
+                        current = parseFloat(target);
+                        clearInterval(timer);
+                    }
+                    
+                    if (isPercentage) {
+                        counter.textContent = current.toFixed(1) + '%';
+                    } else {
+                        counter.textContent = Math.floor(current).toLocaleString() + suffix;
+                    }
+                }, 20);
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initParticleBackground();
+            initBlockchainEffects();
+            
+            // 延迟启动数字动画
+            setTimeout(animateNumbers, 1000);
+            });
+
+        // 区块链增强效果
+        function initBlockchainEffects() {
+            // 添加区块链连接线效果
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.zIndex = '-1';
+            canvas.style.pointerEvents = 'none';
+            document.getElementById('particles-bg').appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            // 区块链节点数据
+            const blockchainNodes = [];
+            for (let i = 0; i < 20; i++) {
+                blockchainNodes.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 1,
+                    vy: (Math.random() - 0.5) * 1,
+                    pulse: Math.random() * Math.PI * 2,
+                    energy: Math.random() * 100
+            });
+        }
+
+            function animateBlockchain() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // 更新节点
+                blockchainNodes.forEach(node => {
+                    node.x += node.vx;
+                    node.y += node.vy;
+                    node.pulse += 0.02;
+                    node.energy += 0.3;
+                    
+                    // 边界反弹
+                    if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+                    if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+                });
+                
+                // 绘制连接
+                for (let i = 0; i < blockchainNodes.length; i++) {
+                    for (let j = i + 1; j < blockchainNodes.length; j++) {
+                        const dx = blockchainNodes[i].x - blockchainNodes[j].x;
+                        const dy = blockchainNodes[i].y - blockchainNodes[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < 200) {
+                            const opacity = (200 - distance) / 200 * 0.3;
+                            ctx.beginPath();
+                            ctx.moveTo(blockchainNodes[i].x, blockchainNodes[i].y);
+                            ctx.lineTo(blockchainNodes[j].x, blockchainNodes[j].y);
+                            ctx.strokeStyle = `rgba(0, 255, 204, ${opacity})`;
+                            ctx.lineWidth = 1;
+                            ctx.stroke();
+                        }
+                    }
+        }
+
+                // 绘制节点
+                blockchainNodes.forEach(node => {
+                    const size = 3 + Math.sin(node.pulse) * 1;
+            
+                    // 外圈光晕
+                    const gradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, size * 3);
+                    gradient.addColorStop(0, 'rgba(0, 255, 204, 0.4)');
+                    gradient.addColorStop(1, 'rgba(0, 255, 204, 0)');
+                    
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, size * 3, 0, Math.PI * 2);
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                    
+                    // 主节点
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, size, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 255, 204, 0.8)';
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animateBlockchain);
+            }
+            
+            animateBlockchain();
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+        });
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,219 @@
+// 全局样式文件
+@import './variables.scss';
+@import './mixins.scss';
+
+// 重置样式
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $text-color-primary;
+  background-color: $background-color-base;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// 链接样式
+a {
+  color: $color-primary;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: $color-primary-light;
+  }
+}
+
+// 按钮基础样式
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: $border-radius-base;
+  font-size: $font-size-base;
+  font-weight: 500;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  // 按钮变体
+  &.btn-primary {
+    background-color: $color-primary;
+    border-color: $color-primary;
+    color: white;
+    
+    &:hover:not(:disabled) {
+      background-color: $color-primary-dark;
+      border-color: $color-primary-dark;
+    }
+  }
+  
+  &.btn-secondary {
+    background-color: transparent;
+    border-color: $border-color-base;
+    color: $text-color-primary;
+    
+    &:hover:not(:disabled) {
+      background-color: $background-color-light;
+    }
+  }
+  
+  &.btn-danger {
+    background-color: $color-danger;
+    border-color: $color-danger;
+    color: white;
+    
+    &:hover:not(:disabled) {
+      background-color: $color-danger-dark;
+      border-color: $color-danger-dark;
+    }
+  }
+}
+
+// 卡片样式
+.card {
+  background: white;
+  border-radius: $border-radius-large;
+  box-shadow: $box-shadow-base;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  
+  &:hover {
+    box-shadow: $box-shadow-hover;
+  }
+  
+  .card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid $border-color-light;
+    background-color: $background-color-light;
+    
+    .card-title {
+      font-size: $font-size-large;
+      font-weight: 600;
+      color: $text-color-primary;
+      margin: 0;
+    }
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-footer {
+    padding: 12px 20px;
+    border-top: 1px solid $border-color-light;
+    background-color: $background-color-light;
+  }
+}
+
+// 表单样式
+.form-group {
+  margin-bottom: 16px;
+  
+  label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+    color: $text-color-primary;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid $border-color-base;
+    border-radius: $border-radius-base;
+    font-size: $font-size-base;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+    }
+    
+    &.is-invalid {
+      border-color: $color-danger;
+    }
+  }
+}
+
+// 工具类
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.d-flex { display: flex; }
+.d-block { display: block; }
+.d-inline-block { display: inline-block; }
+.d-none { display: none; }
+
+.justify-content-center { justify-content: center; }
+.justify-content-between { justify-content: space-between; }
+.justify-content-end { justify-content: flex-end; }
+
+.align-items-center { align-items: center; }
+.align-items-start { align-items: flex-start; }
+.align-items-end { align-items: flex-end; }
+
+.w-100 { width: 100%; }
+.h-100 { height: 100%; }
+
+// 间距工具类
+@for $i from 0 through 5 {
+  .m-#{$i} { margin: #{$i * 8}px; }
+  .mt-#{$i} { margin-top: #{$i * 8}px; }
+  .mr-#{$i} { margin-right: #{$i * 8}px; }
+  .mb-#{$i} { margin-bottom: #{$i * 8}px; }
+  .ml-#{$i} { margin-left: #{$i * 8}px; }
+  
+  .p-#{$i} { padding: #{$i * 8}px; }
+  .pt-#{$i} { padding-top: #{$i * 8}px; }
+  .pr-#{$i} { padding-right: #{$i * 8}px; }
+  .pb-#{$i} { padding-bottom: #{$i * 8}px; }
+  .pl-#{$i} { padding-left: #{$i * 8}px; }
+}
+
+// 响应式断点
+@media (max-width: 768px) {
+  .card {
+    margin: 8px;
+    border-radius: $border-radius-base;
+  }
+  
+  .card-body {
+    padding: 16px;
+  }
+}
+
+// 暗色主题
+.dark {
+  background-color: $background-color-dark;
+  color: $text-color-dark;
+  
+  .card {
+    background-color: $background-color-dark-light;
+    border: 1px solid $border-color-dark;
+  }
+  
+  .form-control {
+    background-color: $background-color-dark-light;
+    border-color: $border-color-dark;
+    color: $text-color-dark;
+    
+    &:focus {
+ 
